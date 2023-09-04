@@ -1,7 +1,13 @@
 const cds = require('@sap/cds');
 
+// module.exports = class storeSales extends cds.ApplicationService {
+//     init(srv) {
 module.exports = cds.service.impl(async (srv) => {
     const { Products } = srv.entities;
+
+    srv.before(['CREATE', 'UPDATE'], ['Clients', 'Categories'], async(req) => {
+        console.log(`Estamos en el método before de ${req.method} de ${req.entity}`);
+    })
 
     srv.before('UPDATE', 'Products', async (req) => {
         const { ID, stock } = req.data;
@@ -21,3 +27,6 @@ module.exports = cds.service.impl(async (srv) => {
         }
     });
 });
+//     return super.init()
+//     }
+// }
