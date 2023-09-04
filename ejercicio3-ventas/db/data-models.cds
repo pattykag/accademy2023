@@ -1,6 +1,7 @@
 using {
     cuid,
-    managed
+    managed,
+    Country
 } from '@sap/cds/common';
 
 namespace sales;
@@ -10,6 +11,7 @@ entity Clients : cuid, managed {
     @mandatory lastname : String(30);
     @mandatory dni      : String(10);
     birthday            : Date;
+    country             : Country;
 }
 
 entity Products : cuid, managed {
