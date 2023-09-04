@@ -1,4 +1,4 @@
-# CAP ejercicio1-ventas
+# CAP ejercicio4-Tiendas
 _out
 *.db
 *.sqlite
@@ -29,5 +29,3 @@ mta_archives/
 # IDEs
 # .vscode
 # .idea
-
-pruebas/
