@@ -6,30 +6,33 @@ using {
 namespace label;
 
 entity Bands : cuid {
-    name     : longname;
-    founded  : Date;
-    musician : Association to many Bands_Musiciands
-                   on musician.band = $self;
+    name        : longname;
+    foundedYear : Integer;
+    genre       : shortname;
+    musician    : Association to many Bands_Musicians
+                      on musician.band = $self;
 }
 
 entity Musicians : cuid {
-    name      : shortname;
-    lastname  : shortname;
-    birthday  : Date;
-    band      : Association to many Bands_Musiciands
-                    on band.musician = $self;
-    recording : Composition of many Recordings
-                    on recording.musician = $self;
+    name       : shortname;
+    lastname   : shortname;
+    birthday   : Date;
+    instrument : longname;
+    band       : Association to many Bands_Musicians
+                     on band.musician = $self;
 }
 
-entity Bands_Musiciands : cuid {
-    band     : Association to Bands;
-    musician : Association to Musicians;
+entity Bands_Musicians : cuid {
+    band      : Association to Bands;
+    musician  : Association to Musicians;
+    recording : Composition of many Recordings
+                    on recording.musician = $self;
 }
 
 entity Disks : cuid {
     name         : longname;
     tracks       : Integer;
+    released     : Integer;
     band         : Association to Bands;
     distribution : Association to many Disks_Distributions
                        on distribution.disk = $self;
@@ -49,7 +52,8 @@ entity Disks_Distributions : cuid {
 entity Recordings : cuid, managed {
     hourQuantity  : Integer;
     recordingDate : Date;
-    musician      : Association to Musicians;
+    promo         : Boolean default false;
+    musician      : Association to Bands_Musicians;
     disk          : Association to Disks;
 }
 
