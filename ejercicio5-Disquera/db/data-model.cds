@@ -20,13 +20,13 @@ entity Musicians : cuid {
     instrument : longname;
     band       : Association to many Bands_Musicians
                      on band.musician = $self;
+    recording : Composition of many Recordings
+                    on recording.musician = $self;
 }
 
 entity Bands_Musicians : cuid {
     band      : Association to Bands;
     musician  : Association to Musicians;
-    recording : Composition of many Recordings
-                    on recording.musician = $self;
 }
 
 entity Disks : cuid {
@@ -53,7 +53,7 @@ entity Recordings : cuid, managed {
     hourQuantity  : Integer;
     recordingDate : Date;
     promo         : Boolean default false;
-    musician      : Association to Bands_Musicians;
+    musician      : Association to Musicians;
     disk          : Association to Disks;
 }
 
