@@ -1,16 +1,38 @@
 using {label as my} from '../db/data-model';
 
 service labelservice {
-    entity Musicians           as projection on my.Musicians;
-    entity Bands               as projection on my.Bands;
-    entity Bands_Musicians     as projection on my.Bands_Musicians;
-    entity Disks               as projection on my.Disks;
-    entity Distributions       as projection on my.Distributions;
-    entity Disks_Distributions as projection on my.Disks_Distributions;
-    entity Recordings          as projection on my.Recordings;
+    entity Musicians             as projection on my.Musicians;
+    entity Bands                 as projection on my.Bands;
+    entity Bands_Musicians       as projection on my.Bands_Musicians;
+    entity Disks                 as projection on my.Disks;
+    entity Distributions         as projection on my.Distributions;
+    entity Disks_Distributions   as projection on my.Disks_Distributions;
 
-    action deleteMusicians (value: array of UUID);
-    action createMusicians (value : array of Musicians) returns oMessage;
+    @cds.redirection.target
+    entity Recordings            as projection on my.Recordings;
+
+    entity MusicianRecordingDate as
+        select from my.Recordings {
+            *,
+            musician.name     as musicianName,
+            musician.lastname as musicianLastname,
+            disk.name         as diskName
+        }
+        excluding {
+            createdAt,
+            createdBy,
+            modifiedAt,
+            modifiedBy
+        }
+        where
+            promo = true
+        order by
+            recordingDate desc
+        limit 1;
+
+    action   deleteMusicians(value : array of UUID);
+    action   createMusicians(value : array of Musicians) returns oMessage;
+    function musicianID(ID : UUID)                       returns Musicians;
 }
 
 type oMessage {

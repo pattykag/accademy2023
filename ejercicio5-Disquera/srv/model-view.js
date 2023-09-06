@@ -1,7 +1,7 @@
 const cds = require('@sap/cds');
 
 module.exports = cds.service.impl(async (srv) => {
-    const { Musicians, Bands_Musicians, Recordings } = srv.entities;
+    const { Musicians } = srv.entities;
 
     srv.before('CREATE', 'Recordings', async (req) => {
         const { hourQuantity } = req.data;
@@ -28,8 +28,7 @@ module.exports = cds.service.impl(async (srv) => {
 
             // await DELETE.from(Musicians).where({ ID }); => Igual que la de abajo
             await DELETE.from(Musicians, { ID });
-            await DELETE.from(Recordings, { musician_ID: ID }); // es una composition a 'Musicians'
-            await DELETE.from(Bands_Musicians, { musician_ID: ID }); // borrar porque está relacionado con 'Recordings'
+            // las horas de grabación vinculadas al músico también son eliminadas debido a la composition (Recordings)
 
             musicians.forEach(element => {
                 console.log(`Músico eliminado: ${element.name} ${element.lastname}`);
@@ -51,6 +50,18 @@ module.exports = cds.service.impl(async (srv) => {
                 message: `Número de filas insertas ${value.length}`
             }
             return oMessage;
+        } catch (error) {
+            req.reject(400, error);
+        }
+    });
+
+    srv.on('musicianID', async (req) => {
+        const { ID } = req.data;
+        console.log(ID);
+
+        try {
+            const query = await SELECT.from(Musicians, { ID });
+            return query;
         } catch (error) {
             req.reject(400, error);
         }
