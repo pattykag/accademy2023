@@ -1,7 +1,5 @@
 const cds = require('@sap/cds');
 
-// module.exports = class storeSales extends cds.ApplicationService {
-//     init(srv) {
 module.exports = cds.service.impl(async (srv) => {
     const { Products } = srv.entities;
 
@@ -32,6 +30,3 @@ module.exports = cds.service.impl(async (srv) => {
         }
     });
 });
-//     return super.init()
-//     }
-// }

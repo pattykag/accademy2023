@@ -1,5 +1,5 @@
 ### POST REQUEST 
-POST http://localhost:4004/odata/v4/labelservice/Recordings
+POST http://localhost:4004/odata/v4/labelservice/Distributions
 Content-Type: application/json
 
 {
