@@ -8,7 +8,7 @@
   "dependencies": {
     "@sap/cds": "^7",
     "@sap/cds-hana": "^2",
-    "@sap/xssec": "^3.3.3",
+    "@sap/xssec": "^3.3.4",
     "express": "^4",
     "passport": "^0.6.0"
   },
@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "cds-serve",
-    "deploy": "mbt build && cf deploy mta_archives/ejercicio1-ventas_1.0.0.mtar --retries 1",
+    "deploy": "npm i && mbt build && cf deploy mta_archives/ejercicio1-ventas_1.0.0.mtar --retries 1",
     "undeploy": "cf undeploy ejercicio1-ventas --delete-services --delete-service-keys -f"
   },
   "cds": {
