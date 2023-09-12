@@ -16,7 +16,7 @@ entity Clients : cuid, managed {
 
 entity Products : cuid, managed {
     @mandatory productName  : String(50);
-    @mandatory precio       : Double;
+    @mandatory price       : Double;
     @mandatory stock        : Integer;
     @mandatory minimumStock : Integer;
     description             : String(50);

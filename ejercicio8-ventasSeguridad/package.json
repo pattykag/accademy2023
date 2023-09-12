@@ -1,30 +1,40 @@
 {
-  "name": "ejercicio1-ventas",
-  "version": "1.0.0",
-  "description": "A simple CAP project.",
-  "repository": "<Add your repository here>",
-  "license": "UNLICENSED",
-  "private": true,
-  "dependencies": {
-    "@sap/cds": "^7",
-    "express": "^4",
-    "@sap/xssec": "^3",
-    "passport": "^0",
-    "@sap/cds-hana": "^2"
-  },
-  "devDependencies": {
-    "@cap-js/sqlite": "^1",
-    "@sap/cds-dk": "^7"
-  },
-  "scripts": {
-    "start": "cds-serve",
-    "deploy": "npm i && mbt build && cf deploy mta_archives/ejercicio1-ventas_1.0.0.mtar --retries 1",
-    "undeploy": "cf undeploy ejercicio1-ventas --delete-services --delete-service-keys -f"
-  },
-  "cds": {
-    "requires": {
-      "auth": "xsuaa",
-      "db": "hana"
-    }
-  }
+    "name": "ejercicio1-ventas",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^7",
+        "@sap/cds-hana": "^2",
+        "@sap/xssec": "^3",
+        "express": "^4",
+        "passport": "^0"
+    },
+    "devDependencies": {
+        "@cap-js/sqlite": "^1",
+        "@sap/cds-dk": "^7",
+        "@sap/ux-specification": "^1.108.13",
+        "rimraf": "^3.0.2"
+    },
+    "scripts": {
+        "start": "cds-serve",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+        "undeploy": "cf undeploy ejercicio1-ventas --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "watch-clients": "cds watch --open clients/webapp/index.html?sap-ui-xx-viewCache=false"
+    },
+    "cds": {
+        "requires": {
+            "[production]": {
+                "auth": "xsuaa",
+                "db": "hana"
+            },
+            "db": "sql"
+        }
+    },
+    "sapux": [
+        "app/clients"
+    ]
 }
