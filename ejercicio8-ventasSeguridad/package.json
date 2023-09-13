@@ -21,6 +21,7 @@
     "scripts": {
         "start": "cds-serve",
         "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+        "deploy-p": "npm i && mbt build && cf deploy mta_archives/ejercicio1-ventas_1.0.0.mtar --retries 1",
         "undeploy": "cf undeploy ejercicio1-ventas --delete-services --delete-service-keys --delete-service-brokers",
         "build": "rimraf resources mta_archives && mbt build --mtar archive",
         "watch-clients": "cds watch --open clients/webapp/index.html?sap-ui-xx-viewCache=false"

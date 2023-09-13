@@ -5,8 +5,12 @@
     {
       "source": "^/odata/(.*)$",
       "target": "/odata/$1",
-      "destination": "router8_ejercicio1_ventas_html_repo_host",
+      "destination": "cap-ventas",
       "authenticationType": "xsuaa",
+      "scope": [
+        "$XSAPPNAME.final-user",
+        "$XSAPPNAME.admin"
+      ],
       "csrfProtection": false
     },
     {

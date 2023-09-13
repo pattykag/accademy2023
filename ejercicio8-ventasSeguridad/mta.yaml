@@ -49,6 +49,7 @@ modules:
         - Authentication: OAuth2UserTokenExchange
           Name: router8_ejercicio1_ventas_xsuaa
           ServiceKeyName: ejercicio1-ventas-xsuaa-key
+          ServiceInstanceName: ejercicio1-ventas-xsuaa
           sap.cloud.service: router8
         existing_destinations_policy: ignore
   build-parameters:
@@ -63,7 +64,6 @@ modules:
   build-parameters:
     build-result: resources
     requires:
-    - artifacts:
     - artifacts:
       - nsclients.zip
       name: nsclients
@@ -84,6 +84,8 @@ resources:
   parameters:
     path: ./xs-security.json
     service: xsuaa
+    service-keys:
+    - name: ejercicio1-ventas-xsuaa-key
     service-plan: application
 - name: ejercicio1-ventas-db
   type: com.sap.xs.hdi-container
@@ -92,6 +94,8 @@ resources:
     service-plan: hdi-shared
 - name: ejercicio1-ventas-destination-service
   type: org.cloudfoundry.managed-service
+  requires:
+    - name: srv-api
   parameters:
     config:
       HTML5Runtime_enabled: true
@@ -103,6 +107,13 @@ resources:
             ProxyType: Internet
             Type: HTTP
             URL: https://ui5.sap.com
+          - Authentication: NoAuthentication
+            Name: cap-ventas
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+            HTML5.ForwardAuthToken: true
+            HTML5.DynamicDestination: true
           existing_destinations_policy: update
       version: 1.0.0
     service: destination
