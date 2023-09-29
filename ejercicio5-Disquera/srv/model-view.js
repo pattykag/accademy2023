@@ -24,38 +24,47 @@ module.exports = class labelservice extends cds.ApplicationService {
             console.log('hourQuantity', hourQuantity);
 
             try {
-                const query = await SELECT.from(Recordings, { ID });
-                console.log('query', query);
+                // const query = await SELECT.from(Recordings, { ID });
+                // console.log('query', query);
 
-                if (query) {
-                    if (hourQuantity >= 6 && query.promo === false) {
+                //if (query) {
+                    if (hourQuantity >= 6) {
                         req.data.promo = true;
                         req.data.hourQuantity = hourQuantity + 2;
                     } else if (hourQuantity < 6 && query.promo === true) {
                         req.data.promo = false;
                         req.data.hourQuantity = hourQuantity - 2;
                     }
-                }
+                //}
             } catch (error) {
                 req.reject(400, error);
             }
         });
 
         srv.on('deleteMusicians', async (req) => {
-            console.log(req.data.value);
-            const ID = req.data.value;
+            const musicianID = req.data.value;
+            console.log(musicianID);
 
             try {
-                const musicians = await SELECT.from(Musicians).columns('name', 'lastname').where({ ID });
+                const musicians = await SELECT.from(Musicians).columns('name', 'lastname', 'ID').where({ ID: musicianID });
                 console.log('musicians', musicians);
 
                 // await DELETE.from(Musicians).where({ ID }); => Igual que la de abajo
-                await DELETE.from(Musicians, { ID });
-                // las horas de grabación vinculadas al músico también son eliminadas debido a la composition (Recordings)
+                if (musicians) {
+                    let ID = [];
+                    musicians.forEach(element => {
+                        ID.push(element.ID)
+                    });
+                    console.log('ID', ID);
+                    
+                    await DELETE.from(Musicians, { ID });
+                    // las horas de grabación vinculadas al músico también son eliminadas debido a la composition (Recordings)
+                    console.log(`Se han eliminado ${musicians.length} músicos`);
 
-                musicians.forEach(element => {
-                    console.log(`Músico eliminado: ${element.name} ${element.lastname}`);
-                });
+                    // musicians.forEach(element => {
+                    //     console.log(`Músico eliminado: ${element.name} ${element.lastname}`);
+                    // });
+                }
             } catch (error) {
                 req.reject(400, error);
             }
